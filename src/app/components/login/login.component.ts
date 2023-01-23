@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
   enviar(){
     console.log(this.formRegister.value)
     if(this.formRegister.valid){
-      this.service.enviodata(this.formRegister.value)
+      this.service.login(this.formRegister.value)
       .then( response => {
         console.log(response)
         this.router.navigate(['/home']);
