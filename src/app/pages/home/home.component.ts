@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Zapatillas } from 'src/app/interface/zapatillas';
+import { ProductosService } from 'src/app/services/productos.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import Swal from 'sweetalert2'
 
@@ -8,11 +10,18 @@ import Swal from 'sweetalert2'
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-  constructor(private serviciousuario: UsuariosService, private router:Router){}
+  zapatillas!:Zapatillas[];
 
+  constructor(private productos:ProductosService ,private serviciousuario: UsuariosService, private router:Router){}
 
+ ngOnInit(): void {
+
+   this.productos.getZapatillas().subscribe(Zapatillas =>{
+    this.zapatillas = Zapatillas
+   })
+ }
   salir(){
     this.serviciousuario.salir()
     .then( ()=> {
@@ -27,6 +36,28 @@ export class HomeComponent {
       this.router.navigate(['/login']);
     } )
     .catch( error => console.log(error))
+  }
+
+  eliminar(producto:Zapatillas){
+    Swal.fire({
+      title: 'Desea eliminar producto',
+      icon: 'error',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Si, Eliminar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Exitoso!',
+          'Has Eliminado producto exitosamente',
+          'success'
+        )
+        this.productos.deleteProduct(producto)
+      }
+    })
+
+    
   }
   
   

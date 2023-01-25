@@ -6,6 +6,8 @@ import { ComponentsModule } from './components/components.module';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
+import { provideFirestore,getFirestore } from '@angular/fire/firestore';
+import { PagesModule } from './pages/pages.module';
 
 var config = {
   apiKey: environment.firebase.apiKey,
@@ -24,7 +26,9 @@ var config = {
     AppRoutingModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
-    ComponentsModule
+    ComponentsModule,
+    provideFirestore(() => getFirestore()),
+    PagesModule
   ],
   providers: [
 
